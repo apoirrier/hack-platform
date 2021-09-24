@@ -17,14 +17,21 @@ The `hack_dns_net` interface has IP 192.168.23.2 and the `hack_user_net` interfa
 `user` is a user.
 You can make DNS queries from it with `dig @192.168.23.23 mysite.com`.
 
+## Requirements
+
+You need docker-compose to be installed.
+Also you may need to install the .deb package included on the host, though I can't remember why.
+
 ## How to use
 
-Launch the containers using `./start_simulation.sh`.
+Launch the containers using `docker-compose up -d`.
 
-You can connect to a box using `docker exec -it name /bin/bash` by replacing `name` with the name of the box.
+Try to send DNS queries from the user using `docker exec -it user dig @192.168.23.23 perdu.fr`.
+Try to see if you can see those requests from the middlebox using `docker exec -it middle tcpdump port 53`.
+
+Stop all containers with `docker-compose down`.
 
 ## ToDo
 
-- redo the configuration using docker-compose to have a simpler configuration
 - create a real client sending regular DNS queries and sending some http query with flag using the answer
 - allow direct SSH connection to the middle box

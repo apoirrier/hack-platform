@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+    dns:
+        image: ubuntu
+        container_name: dns
+        networks: 
+            hack_dns_net:
+                ipv4_address: 192.168.23.23
+        cap_add:
+            - NET_ADMIN
+        volumes:
+            - ./dns:/dns
+        command: /dns/start.sh
+    user:
+        image: ubuntu
+        container_name: user
+        networks:
+            hack_user_net:
+                ipv4_address: 192.168.42.42
+        cap_add:
+            - NET_ADMIN
+        volumes:
+            - ./user:/user
+        command: /user/start.sh
+    middle:
+        image: ubuntu
+        container_name: middle
+        networks:
+            hack_user_net:
+                ipv4_address: 192.168.42.2
+            hack_dns_net:
+                ipv4_address: 192.168.23.2
+        volumes:
+            - ./middle:/middle
+        command: /middle/start.sh
+
+networks:
+    hack_dns_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: "192.168.23.0/24"
+    hack_user_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: "192.168.42.0/24"
+
+volumes:
+    dns:
+    user:
+    middle:
