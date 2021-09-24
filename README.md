@@ -27,11 +27,13 @@ Also you may need to install the .deb package included on the host, though I can
 Launch the containers using `docker-compose up -d`.
 
 Try to send DNS queries from the user using `docker exec -it user dig @192.168.23.23 perdu.fr`.
-Try to see if you can see those requests from the middlebox using `docker exec -it middle tcpdump port 53`.
+A student can connect to the middle box via SSH, using `ssh student@<ip_of_host> -p 2322`, password is `Hellothere`..
+Try to see packets with `tcpdump port 53`.
 
 Stop all containers with `docker-compose down`.
 
 ## ToDo
 
-- create a real client sending regular DNS queries and sending some http query with flag using the answer
-- allow direct SSH connection to the middle box
+- create a real client sending regular DNS queries and sending some http query with flag using the answer.
+- create configuration for multiple students.
+
