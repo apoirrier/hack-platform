@@ -15,7 +15,7 @@ All traffic between those two is routed via `middle`.
 The `hack_dns_net` interface has IP 192.168.23.2 and the `hack_user_net` interface has IP 192.168.42.2.
 
 `user` is a user.
-You can make DNS queries from it with `dig @192.168.23.23 mysite.com`.
+It continously performs http queries to perdu.fr, with a flag parameter set by an environment variable.
 
 ## Requirements
 
@@ -26,14 +26,17 @@ Also you may need to install the .deb package included on the host, though I can
 
 Launch the containers using `docker-compose up -d`.
 
-Try to send DNS queries from the user using `docker exec -it user dig @192.168.23.23 perdu.fr`.
-A student can connect to the middle box via SSH, using `ssh student@<ip_of_host> -p 2322`, password is `Hellothere`..
-Try to see packets with `tcpdump port 53`.
+A student can connect to the middle box via SSH, using `ssh student@<ip_of_host> -p 2322`, password is `Hellothere`.
+Try to see packets with `tcpdump port 53`, you should be able to see the queries made by the user.
+
+The goal of the exercise is for the student to mount a DNS hijacking attack on the middle box.
+That way they can redirect traffic to perdu.fr to the middle box.
+To test it, you can start an http server on the middle box with `python3 -m http.server 80`.
+Then make a query from the user using `docker exec -it user wget http://192.168.42.2?flag=$FLAG`.
+You should see the flag appear on the middle box log.
 
 Stop all containers with `docker-compose down`.
 
 ## ToDo
 
-- create a real client sending regular DNS queries and sending some http query with flag using the answer.
-- create configuration for multiple students.
-
+- create configuration for multiple students and generate flags dynamically.

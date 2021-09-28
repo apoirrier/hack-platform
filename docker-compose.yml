@@ -18,6 +18,8 @@ services:
         networks:
             hack_user_net:
                 ipv4_address: 192.168.42.42
+        environment:
+            - FLAG=ilovestarwars
         cap_add:
             - NET_ADMIN
         volumes:
